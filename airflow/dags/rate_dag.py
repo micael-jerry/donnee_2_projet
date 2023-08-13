@@ -3,9 +3,9 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.decorators import task
 from airflow.operators.python import PythonOperator
+from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 
-from donnee_2_rates_etl import extract_transform_data
-from donnee_2_rates_etl import load_data
+from rate_etl import extract_transform_load_data
 
 default_args = {
     "owner": "admin",
@@ -21,16 +21,15 @@ with DAG(
     def start_extract():
         print("Start extract rates data")
 
-    extract__and_transform_data_to_local = PythonOperator(
-        task_id="extract_data_to_local",
-        python_callable=extract_transform_data
+
+    extract_transform_load_data_to_s3 = PythonOperator(
+        task_id="extract_transform_load_data_to_s3",
+        python_callable=extract_transform_load_data
     )
 
-    load_data_to_s3_bucket = PythonOperator(
-        task_id="load_data_to_s3_bucket",
-        python_callable=load_data
+    trigger_get_data_s3 = TriggerDagRunOperator(
+        task_id="trigger_get_s3_data",
+        trigger_dag_id="get_s3_data"
     )
 
-    start_extract() >> extract__and_transform_data_to_local >> load_data_to_s3_bucket
-
-with DAG()
+    start_extract() >> extract_transform_load_data_to_s3
