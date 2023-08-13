@@ -25,7 +25,7 @@ def extract_transform_load_data():
     rates = rates_response_json['rates']
     df_rates: pd.DataFrame = pd.DataFrame(list(rates.items()), columns=['symbols', 'rates'])
 
-    df: pd.DataFrame = pd.merge(df_rates, df_symbols, how='left')
+    df: pd.DataFrame = pd.merge(df_symbols, df_rates, how='right')
 
     load_data(df)
 
