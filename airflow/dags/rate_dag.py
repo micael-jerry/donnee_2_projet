@@ -27,9 +27,9 @@ with DAG(
         python_callable=extract_transform_load_data
     )
 
-    trigger_get_data_s3 = TriggerDagRunOperator(
-        task_id="trigger_get_s3_data",
-        trigger_dag_id="get_s3_data"
+    update_s3_data_csv = TriggerDagRunOperator(
+        task_id="trigger_update_s3_data_csv",
+        trigger_dag_id="update_s3_data_csv"
     )
 
-    start_extract() >> extract_transform_load_data_to_s3
+    start_extract() >> extract_transform_load_data_to_s3 >> update_s3_data_csv

@@ -5,6 +5,7 @@ import pandas as pd
 import os
 
 from s3_service import upload_file_to_s3
+from s3_service import load_data
 
 
 def extract_transform_load_data():
@@ -28,9 +29,3 @@ def extract_transform_load_data():
     df: pd.DataFrame = pd.merge(df_symbols, df_rates, how='right')
 
     load_data(df)
-
-
-def load_data(dataframe: pd.DataFrame):
-    with io.StringIO() as csv_buffer:
-        dataframe.to_csv(csv_buffer, index=True)
-        upload_file_to_s3(csv_buffer)
