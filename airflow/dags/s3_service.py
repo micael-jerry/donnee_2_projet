@@ -14,11 +14,11 @@ AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 AWS_REGION_NAME = os.getenv('AWS_REGION_NAME')
 AWS_S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
 
-
 s3_client: boto3.client = boto3.client('s3',
-                                        aws_access_key_id=AWS_ACCESS_KEY_ID,
-                                        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-                                        region_name=AWS_REGION_NAME)
+                                       aws_access_key_id=AWS_ACCESS_KEY_ID,
+                                       aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+                                       region_name=AWS_REGION_NAME)
+
 
 def upload_file_to_s3(file_buffer: io.StringIO, key: str):
     try:
@@ -28,13 +28,18 @@ def upload_file_to_s3(file_buffer: io.StringIO, key: str):
     except Exception as e:
         print(e)
 
-def load_data(dataframe: pd.DataFrame, key= CSV_FILE_NAME_GENERATED_TODAY):
+
+def load_data(dataframe: pd.DataFrame, add_index: bool = False, key: str = CSV_FILE_NAME_GENERATED_TODAY):
     with io.StringIO() as csv_buffer:
-        dataframe.to_csv(csv_buffer, index=True)
+        if add_index:
+            dataframe.to_csv(csv_buffer, index=True, index_label="id")
+        else:
+            dataframe.to_csv(csv_buffer, index=False)
         upload_file_to_s3(csv_buffer, key)
 
+
 # Default: get file generated today
-def get_file(file_name: str = CSV_FILE_NAME_GENERATED_TODAY) -> io.StringIO:
+def get_file(file_name: str = CSV_FILE_NAME_GENERATED_TODAY) -> io.StringIO | None:
     try:
         response = s3_client.get_object(Bucket=AWS_S3_BUCKET_NAME, Key=file_name)
         csv_content = response['Body'].read().decode('utf-8')

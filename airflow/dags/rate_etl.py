@@ -1,10 +1,7 @@
-import io
-
 import requests as rq
 import pandas as pd
 import os
 
-from s3_service import upload_file_to_s3
 from s3_service import load_data
 
 
@@ -28,4 +25,4 @@ def extract_transform_load_data():
 
     df: pd.DataFrame = pd.merge(df_symbols, df_rates, how='right')
 
-    load_data(df)
+    load_data(df, add_index=True)
