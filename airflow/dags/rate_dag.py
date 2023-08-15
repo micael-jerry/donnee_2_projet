@@ -15,7 +15,7 @@ default_args = {
 with DAG(
         dag_id="rates_changes_data",
         default_args=default_args,
-        schedule_interval="45 12 * * *"
+        schedule_interval="30 05 * * *"
 ) as dag:
     @task
     def start_extract():
