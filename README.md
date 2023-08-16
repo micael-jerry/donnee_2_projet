@@ -1,29 +1,13 @@
-# Airflow
+# Donnees 2 - Projet
 
-## Configuration
+> Le contexte de ce projet réside dans la nécessité de comprendre les fluctuations des taux de change et leur impact potentiel sur nos opérations commerciales.
 
-- Mettre tout ce qu'il y a dans le `/airflow` dans le repertoire `~/airflow` de votre pc
-- Entrer dans le fichier `airflow.cfg` dans `~/airflow`
-  - changer la `default_timezone` qui est par defaut defini sur `utc` en `system`
-- cree un `.env` dans la racine airflow et mettet les variable necessaire
-![img](./assets/Screenshot_20230729_120520.png)
+## Language, technologie, service utiliser, ...
 
-## Demarrage
+- Python
+- Apache Airflow
+- AWS S3
 
-- l'heure du lancement du dag donnee_2_rates_dag.py est cette ligne (`schedule_interval`):
+## Lien
 
-![img](/assets/Screenshot_20230729_121048.png)
-
-- Donc change le avec ce qui vous convient quand vous tester
-
-- Lancer les commande suivant:
-  - nouveau session de terminal: `airflow scheduler`
-  - autre session de terminal: `airflow webserver`
-
-- acceder a la localhost sur le port 8080
-- changer la date utc en date du serveur
-
-## Fin
-
-- normalement si tout marche bien, le dag se lance a l'heure que vous avez defini sur le `schedule_interval`
-- et il y aura un fichier cree dans data apres l'execution
+- [document du projet](https://docs.google.com/document/d/1jpOd2D8mMRk54vj6Q4M0MYZwmvpAYHVqDIAgVTw98tM/edit?usp=sharing)
